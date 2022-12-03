@@ -18,4 +18,3 @@ def read_data(data_name):
     return data_col_year,data_col_country
 
 agricultutal_land_year, agricultutal_land_coun = read_data("Agricultural_Land.xls")
-print(agricultutal_land_year)
