@@ -95,6 +95,5 @@ df_heatmap = heatmap_df.set_index('Indicator')
 plt.figure()
 df_heatmap.index.name = None
 heat = df_heatmap.transpose()
-print(heat.corr())
 sns.heatmap(heat.corr(), cmap='PuOr')
 plt.show()
