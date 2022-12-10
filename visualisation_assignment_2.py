@@ -49,6 +49,13 @@ def heat_plot(dataframe, size=6):
     plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
     plt.yticks(range(len(corr.columns)), corr.columns)
 
+def line_plot(dataframe, title=""):
+    df = pd.DataFrame({'China': dataframe["China"],
+                       'India': dataframe["India"],
+                       'Japan': dataframe["Japan"],
+                       'United Kingdom': dataframe["United Kingdom"]}, index=dataframe.index)
+    df.plot.line()
+    plt.title(title)
 
 countries = ["India", "Sudan", "China", "Germany", "United Kingdom",
              "Japan", "Somalia", "Bangladesh", "Saudi Arabia"]
@@ -97,3 +104,7 @@ df_heatmap.index.name = None
 heat = df_heatmap.transpose()
 sns.heatmap(heat.corr(), cmap='PuOr')
 plt.show()
+
+
+line_plot(fossil_coun, title ="Fossil Fuel Consumption")
+line_plot(pollution_coun, title ="PM2.5 Pollution")
