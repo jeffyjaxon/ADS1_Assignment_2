@@ -5,7 +5,7 @@ import seaborn as sns
 
 def read_data(file_name):
     """
-
+    Function reads data according to the file name passed as argument
 
     Parameters
     ----------
@@ -40,7 +40,7 @@ def read_data(file_name):
 
 def return_dataframes(data):
     """
-    
+    Function filters the dataframe with the countries in the list
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ def return_dataframes(data):
 
 def bar_graph(data_col, data_row, title=""):
     """
-    
+    Function plots a bar graph with the datframe and title.
 
     Parameters
     ----------
@@ -89,7 +89,8 @@ def bar_graph(data_col, data_row, title=""):
 
 def line_plot(dataframe, title=""):
     """
-    
+    Function plots a line graph with the dataframe and title passed as
+    arguments
 
     Parameters
     ----------
@@ -109,17 +110,21 @@ def line_plot(dataframe, title=""):
                        'United Kingdom': dataframe["United Kingdom"]},
                       index=dataframe.index)
 
+    filter_df = df[df.index.isin(years)]
     plt.figure()
-    df.plot.line()
+    filter_df.plot.line()
     plt.title(title)
     plt.xlabel("Years")
+    plt.xticks(years, rotation=90)
     plt.ylabel("Percentage(Fossil Fuel Consumption)")
+    plt.legend()
     plt.show()
 
 
 def df_generate(country):
     """
-    
+    Function returns the dataframe for generating heatmap with the country name
+    passed as argument
 
     Parameters
     ----------
@@ -159,7 +164,7 @@ def df_generate(country):
 
 def heatmap_plot(dataframe, title=""):
     """
-    
+    Function to plot heatmap with the dataframe as title passed as argument.
 
     Parameters
     ----------
@@ -180,6 +185,38 @@ def heatmap_plot(dataframe, title=""):
     plt.title(title)
     plt.show()
 
+
+def avg_calculator(dataframe):
+    """
+    Function calculates the mean for the columns in the dataframe.
+
+    Parameters
+    ----------
+    dataframe : DataFrame
+        The dataframe whose mean value needs to be calculated.
+
+    Returns
+    -------
+    avg_df : DataFrame
+        DataFrame with the mean value.
+
+    """
+    avg_df = pd.DataFrame(
+        {'Countries': countries,
+         'Mean': [[dataframe[countries[0]].mean()][0],
+                  [dataframe[countries[1]].mean()][0],
+                  [dataframe[countries[2]].mean()][0],
+                  [dataframe[countries[3]].mean()][0],
+                  [dataframe[countries[4]].mean()][0],
+                  [dataframe[countries[5]].mean()][0],
+                  [dataframe[countries[6]].mean()][0],
+                  [dataframe[countries[7]].mean()][0],
+                  [dataframe[countries[8]].mean()][0]]
+         }
+    )
+    return avg_df
+
+
 # List of countries to filter dataframe
 countries = ["India", "Sudan", "China", "Germany", "United Kingdom",
              "Japan", "Somalia", "Bangladesh", "Saudi Arabia"]
@@ -188,6 +225,8 @@ countries = ["India", "Sudan", "China", "Germany", "United Kingdom",
 indicators = ['Total Unemployment', 'Male Unemployment', 'Female Unemployment',
               'Fossil Fuel Consumption', 'PM2.5 Pollution',
               'Population Growth']
+
+years = [2000.0, 2005.0, 2010.0, 2015.0, 2020.0]
 
 # Read data from excel files for various files
 total_unemployment_year, total_unemployment_coun = read_data(
@@ -204,19 +243,24 @@ population_growth_year, population_growth_coun = read_data(
 # Plotting Bar Graph for corresponding dataframes
 bar_graph(total_unemployment_year, total_unemployment_coun,
           title="Percentage of Total Unemployemnt")
+
 bar_graph(unemployment_male_year, unemployment_male_coun,
           title="Percentage of Unemployemnt - Male")
+
 bar_graph(unemployment_female_year, unemployment_female_coun,
           title="Percentage of Unemployemnt - Female")
 
 # Generate dataframe to plot Heatmaps
 df_heatmap_china = df_generate("China")
-df_heatmap_india = df_generate("India")
+df_heatmap_japan = df_generate("Japan")
 
 # Plotting Heatmaps for different countries
 heatmap_plot(df_heatmap_china, title="China")
-heatmap_plot(df_heatmap_india, title="India")
+heatmap_plot(df_heatmap_japan, title="Japan")
 
 # Plotting Line Graph
 line_plot(fossil_coun, title="Fossil Fuel Consumption")
 line_plot(pollution_coun, title="PM2.5 Pollution Percentage")
+
+# Prints the mean for the fossil fuel consumption
+print(avg_calculator(fossil_coun))
